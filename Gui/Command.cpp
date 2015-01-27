@@ -113,9 +113,7 @@ void CmdShowcaseImportCar::activated(int iMsg)
 			//geo->Placement.setValue(Base::Placement(Base::Vector3d(20,0,8),Base::Rotation(Base::Vector3d(0,1,0),-(0.6))));
 			geo->transformPlacement(porteGauchePlacement);
 			
-		}
-
-		
+		}	
 		
 		//
 		//porteDroite->transformPlacement(porteDroitePlacement);
