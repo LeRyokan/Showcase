@@ -60,5 +60,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* test = new Gui::ToolBarItem(root);
     test->setCommand( "ShowcaseMod Tools" );
     *test << "ShowcaseMod_Test"; 
+	*test << "Import_Car";
+	//*test << "Separator";
+	*test << "Open_Right_Door";
+	*test << "Open_Left_Door";
+	*test << "Open_Car_Trunk";
     return root;
 }

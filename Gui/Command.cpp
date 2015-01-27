@@ -31,6 +31,11 @@
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+
+#include <Gui/MainWindow.h>
+#include <Gui/FileDialog.h>
+
+
 #include <windows.h>
 
 
@@ -56,9 +61,37 @@ CmdShowcaseModTest::CmdShowcaseModTest()
 
 void CmdShowcaseModTest::activated(int iMsg)
 {
-   // Base::Console().Message("Hello, World!\n");
-    
-	App::Document* myDoc = App::GetApplication().getActiveDocument();
+   Base::Console().Message("Hello, World!\n");
+}
+
+//===========================================================================
+// CmdShowcaseImportCar
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseImportCar);
+
+
+CmdShowcaseImportCar::CmdShowcaseImportCar()
+  : Command("Import_Car")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Import car to animate");
+    sToolTipText    = QT_TR_NOOP("Import a new car in the active scene");
+    sWhatsThis      = "Import_Car";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test2";
+}
+
+void CmdShowcaseImportCar::activated(int iMsg)
+{
+	// Base::Console().Message("Hello, World!\n");
+   
+
+	// FileOpen //
+	App::Application &app = App::GetApplication();
+	App::Document * myDoc = app.openDocument("C:/Users/tixie_000/Desktop/Projet_3DTRI_RenduEtape2_Groupe10/PeugeotAnimee.FCStd");
+		
+	//App::Document* myDoc = App::GetApplication().getActiveDocument();
 
 	//Selection de la porte Gauche
 	App::DocumentObject* porteGauche = myDoc->getObject("Peugeot_207");
@@ -98,8 +131,85 @@ void CmdShowcaseModTest::activated(int iMsg)
 	//Base::Console().Message(myCar->getNameInDocument());
 }
 
+
+
+
+
+//===========================================================================
+// CmdShowcaseOpenRightDoor
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseOpenRightDoor);
+
+
+CmdShowcaseOpenRightDoor::CmdShowcaseOpenRightDoor()
+  : Command("Open_Right_Door")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Open the right door");
+    sToolTipText    = QT_TR_NOOP("Animation of the right door when it's openning");
+    sWhatsThis      = "Open_Right_Door";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test3";
+}
+
+void CmdShowcaseOpenRightDoor::activated(int iMsg)
+{
+	Base::Console().Message("VA CODER CETTE METHODE PLUS VITE QUE CA");
+}
+
+//===========================================================================
+// CmdShowcaseOpenLeftDoor
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseOpenLeftDoor);
+
+
+CmdShowcaseOpenLeftDoor::CmdShowcaseOpenLeftDoor()
+  : Command("Open_Left_Door")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Open the left door");
+    sToolTipText    = QT_TR_NOOP("Animation of the left door when it's openning");
+    sWhatsThis      = "Open_Left_Door";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test4";
+}
+
+void CmdShowcaseOpenLeftDoor::activated(int iMsg)
+{
+	Base::Console().Message("ET CETTE METHODE LA ! TU L'AS OUBLIER AUSSI PEUT ETRE ?");	
+}
+
+//===========================================================================
+// CmdShowcaseOpenCarTrunk 
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseOpenCarTrunk);
+
+
+CmdShowcaseOpenCarTrunk::CmdShowcaseOpenCarTrunk()
+  : Command("Open_Car_Trunk")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Open the car trunk");
+    sToolTipText    = QT_TR_NOOP("Animation of the car trunk when it's openning");
+    sWhatsThis      = "Open_Car_Trunk";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test5";
+}
+
+void CmdShowcaseOpenCarTrunk::activated(int iMsg)
+{
+	Base::Console().Message("WHHHHHAAAAAAAAAAAAAAAAAAAATTTT ENCORE UNE METHODE VIDE ! ");		
+}
+
 void CreateShowcaseModCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdShowcaseModTest());
+	rcCmdMgr.addCommand(new CmdShowcaseImportCar());
+	rcCmdMgr.addCommand(new CmdShowcaseOpenRightDoor());
+	rcCmdMgr.addCommand(new CmdShowcaseOpenLeftDoor());
+	rcCmdMgr.addCommand(new CmdShowcaseOpenCarTrunk());
 }
