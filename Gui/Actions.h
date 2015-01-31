@@ -66,7 +66,10 @@ virtual void  update()
 	Action::update();
 	float evolution = (elapsedTime)/(duration*1000);
 	if(evolution > 1.0)
+	{
 		evolution = 1.0;
+		stop();
+	}
 
 	App::GeoFeature* geo = (App::GeoFeature*)target;
 	geo->Placement.setValue(Base::Placement::slerp(startValue, endValue, evolution) );

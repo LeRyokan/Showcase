@@ -146,6 +146,7 @@ void CmdShowcaseImportCar::activated(int iMsg)
 //===========================================================================
 DEF_STD_CMD(CmdShowcaseOpenRightDoor);
 
+PlacementAction * rightDoorAction = NULL;
 
 CmdShowcaseOpenRightDoor::CmdShowcaseOpenRightDoor()
   : Command("Open_Right_Door")
@@ -164,8 +165,13 @@ void CmdShowcaseOpenRightDoor::activated(int iMsg)
 	
 	App::Document* myDoc = App::GetApplication().getActiveDocument();
 	PlacementAction * action = new PlacementAction();
-	action->setDuration(2);
-	
+	if(rightDoorAction != NULL)
+	{
+		rightDoorAction->stop();
+		delete rightDoorAction;
+		rightDoorAction = NULL;
+	}
+	rightDoorAction = action;
 	Base::Placement porteDroitePlacementOrig(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
 	Base::Placement porteDroitePlacementDest(Base::Vector3d(101*10,0,101*4),Base::Rotation(Base::Vector3d(0,1,0),(-101*0.6)));
 	App::DocumentObject * obj = myDoc->getObject("Peugeot_207001");
