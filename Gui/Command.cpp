@@ -37,6 +37,7 @@
 
 
 #include <windows.h>
+#include "Actions.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -96,10 +97,12 @@ void CmdShowcaseImportCar::activated(int iMsg)
 		
 	//App::Document* myDoc = App::GetApplication().getActiveDocument();
 
+	/*
 	//Selection de la porte Gauche
 	App::DocumentObject* porteGauche = myDoc->getObject("Peugeot_207");
 	App::GeoFeature* geo = (App::GeoFeature*)myDoc->getObject("Peugeot_207");
 	Base::Placement porteGauchePlacement = geo->Placement.getValue();
+	*/
 
 	//Selection de la porte Droite
 	//App::DocumentObject* porteDroite = myDoc->getObject("Peugeot_207001");
@@ -110,7 +113,9 @@ void CmdShowcaseImportCar::activated(int iMsg)
 	
 		//Base::Placement porteGauchePlacement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),-(i*0.1)));
 		//Base::Placement porteDroitePlacement(Base::Vector3(i*10,0,i*4),Base::Rotation(Base::Vector3(0,1,0),(i*0.6)));
-		for(int i=0; i<101 ; i++)
+		
+	/*
+	for(int i=0; i<101 ; i++)
 		{
 			geo->Placement.setValue(Base::Placement(Base::Vector3d(-i*10,0,i*4),Base::Rotation(Base::Vector3d(0,1,0),-(i*0.6))));
 			//geo->Placement.setValue(Base::Placement(Base::Vector3d(20,0,8),Base::Rotation(Base::Vector3d(0,1,0),-(0.6))));
@@ -124,7 +129,7 @@ void CmdShowcaseImportCar::activated(int iMsg)
 		
 		Gui::Application::Instance->updateActive();
 		Sleep(10);
-
+		*/
 	
 
    
@@ -156,7 +161,19 @@ CmdShowcaseOpenRightDoor::CmdShowcaseOpenRightDoor()
 
 void CmdShowcaseOpenRightDoor::activated(int iMsg)
 {
-	Base::Console().Message("VA CODER CETTE METHODE PLUS VITE QUE CA");
+	
+	App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	action->setDuration(2);
+	
+	Base::Placement porteDroitePlacementOrig(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
+	Base::Placement porteDroitePlacementDest(Base::Vector3d(101*10,0,101*4),Base::Rotation(Base::Vector3d(0,1,0),(-101*0.6)));
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207001");
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(porteDroitePlacementOrig);
+	action->setDuration(10.0);
+	action->setTargetAndEndValue(obj,porteDroitePlacementDest);
+	action->update();
 }
 
 //===========================================================================
@@ -194,7 +211,7 @@ CmdShowcaseOpenCarTrunk::CmdShowcaseOpenCarTrunk()
     sAppModule      = "ShowcaseMod";
     sGroup          = QT_TR_NOOP("ShowcaseMod");
     sMenuText       = QT_TR_NOOP("Open the car trunk");
-    sToolTipText    = QT_TR_NOOP("Animation of the car trunk when it's openning");
+    sToolTipText    = QT_TR_NOOP("Animation of the car trunk when it's opening");
     sWhatsThis      = "Open_Car_Trunk";
     sStatusTip      = sToolTipText;
     sPixmap         = "Test5";

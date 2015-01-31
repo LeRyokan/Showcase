@@ -20,6 +20,8 @@ qt4_add_resources(ShowcaseMod_QRC_SRCS Resources/ShowcaseMod.qrc)
 
 SET(ShowcaseModGui_SRCS
     ${ShowcaseMod_QRC_SRCS}
+    Actions.cpp
+    Actions.h
     AppShowcaseModGui.cpp
     AppShowcaseModGuiPy.cpp
     Command.cpp
