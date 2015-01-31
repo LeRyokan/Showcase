@@ -89,7 +89,10 @@ void CmdShowcaseImportCar::activated(int iMsg)
 
 	// FileOpen //
 	App::Application &app = App::GetApplication();
-	App::Document * myDoc = app.openDocument("C:/Users/tixie_000/Desktop/Projet_3DTRI_RenduEtape2_Groupe10/PeugeotAnimee.FCStd");
+	
+	QString docName = Gui::FileDialog::getOpenFileName();
+
+	App::Document * myDoc = app.openDocument(docName.toAscii() );
 		
 	//App::Document* myDoc = App::GetApplication().getActiveDocument();
 
