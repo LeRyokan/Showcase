@@ -173,11 +173,11 @@ void CmdShowcaseOpenRightDoor::activated(int iMsg)
 	}
 	rightDoorAction = action;
 	Base::Placement porteDroitePlacementOrig(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
-	Base::Placement porteDroitePlacementDest(Base::Vector3d(101*10,0,101*4),Base::Rotation(Base::Vector3d(0,1,0),(-101*0.6)));
+	Base::Placement porteDroitePlacementDest(Base::Vector3d(100*8,0,100*4),Base::Rotation(Base::Vector3d(0,1,0),(-101*0.8)));
 	App::DocumentObject * obj = myDoc->getObject("Peugeot_207001");
 	App::GeoFeature * geo = (App::GeoFeature*) obj;
 	geo->Placement.setValue(porteDroitePlacementOrig);
-	action->setDuration(10.0);
+	action->setDuration(10);
 	action->setTargetAndEndValue(obj,porteDroitePlacementDest);
 	action->update();
 }
@@ -187,6 +187,7 @@ void CmdShowcaseOpenRightDoor::activated(int iMsg)
 //===========================================================================
 DEF_STD_CMD(CmdShowcaseOpenLeftDoor);
 
+PlacementAction * leftDoorAction = NULL;
 
 CmdShowcaseOpenLeftDoor::CmdShowcaseOpenLeftDoor()
   : Command("Open_Left_Door")
@@ -202,7 +203,30 @@ CmdShowcaseOpenLeftDoor::CmdShowcaseOpenLeftDoor()
 
 void CmdShowcaseOpenLeftDoor::activated(int iMsg)
 {
-	Base::Console().Message("ET CETTE METHODE LA ! TU L'AS OUBLIER AUSSI PEUT ETRE ?");	
+	
+
+	
+//Base::Console().Message("ET CETTE METHODE LA ! TU L'AS OUBLIER AUSSI PEUT ETRE ?");	
+
+App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	if(leftDoorAction != NULL)
+	{
+		leftDoorAction->stop();
+		delete leftDoorAction;
+		leftDoorAction = NULL;
+	}
+	leftDoorAction = action;
+	Base::Placement porteGauchePlacementOrig(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
+	Base::Placement porteGauchePlacementDest(Base::Vector3d(-100*8.75,0,100*5.6),Base::Rotation(Base::Vector3d(0,1,0),(101*0.8)));
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207");
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(porteGauchePlacementOrig);
+	action->setDuration(10);
+	action->setTargetAndEndValue(obj,porteGauchePlacementDest);
+	action->update();
+
+//FreeCAD.ActiveDocument.getObject("Peugeot_207").Placement = App.Placement(App.Vector(-i*10,0,i*4),App.Rotation(App.Vector(0,1,0),-(i*0.6)))
 }
 
 //===========================================================================
