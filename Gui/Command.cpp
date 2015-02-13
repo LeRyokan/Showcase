@@ -93,7 +93,11 @@ void CmdShowcaseImportCar::activated(int iMsg)
 	
 	QString docName = Gui::FileDialog::getOpenFileName();
 
-	App::Document * myDoc = app.openDocument(docName.toAscii() );
+	if(docName != NULL) {
+		App::Document * myDoc = app.openDocument(docName.toAscii() );
+	}
+
+	
 		
 	//App::Document* myDoc = App::GetApplication().getActiveDocument();
 
