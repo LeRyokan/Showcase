@@ -65,5 +65,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 	*test << "Open_Right_Door";
 	*test << "Open_Left_Door";
 	*test << "Open_Car_Trunk";
+	*test << "Close_Right_Door";
+	*test << "Close_Left_Door";
+	*test << "Close_Trunk";
     return root;
 }

@@ -39,6 +39,8 @@
 #include <windows.h>
 #include "Actions.h"
 
+void stopCloseTrunkAction();
+void stopOpenTrunkAction();
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -96,54 +98,7 @@ void CmdShowcaseImportCar::activated(int iMsg)
 	if(docName != NULL) {
 		App::Document * myDoc = app.openDocument(docName.toAscii() );
 	}
-
-	
-		
-	//App::Document* myDoc = App::GetApplication().getActiveDocument();
-
-	/*
-	//Selection de la porte Gauche
-	App::DocumentObject* porteGauche = myDoc->getObject("Peugeot_207");
-	App::GeoFeature* geo = (App::GeoFeature*)myDoc->getObject("Peugeot_207");
-	Base::Placement porteGauchePlacement = geo->Placement.getValue();
-	*/
-
-	//Selection de la porte Droite
-	//App::DocumentObject* porteDroite = myDoc->getObject("Peugeot_207001");
-	//App::PropertyPlacement porteDroitePlacement = porteDroite->placement();
-	  
-
-	
-	
-		//Base::Placement porteGauchePlacement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),-(i*0.1)));
-		//Base::Placement porteDroitePlacement(Base::Vector3(i*10,0,i*4),Base::Rotation(Base::Vector3(0,1,0),(i*0.6)));
-		
-	/*
-	for(int i=0; i<101 ; i++)
-		{
-			geo->Placement.setValue(Base::Placement(Base::Vector3d(-i*10,0,i*4),Base::Rotation(Base::Vector3d(0,1,0),-(i*0.6))));
-			//geo->Placement.setValue(Base::Placement(Base::Vector3d(20,0,8),Base::Rotation(Base::Vector3d(0,1,0),-(0.6))));
-			geo->transformPlacement(porteGauchePlacement);
-			
-		}	
-		
-		//
-		//porteDroite->transformPlacement(porteDroitePlacement);
-
-		
-		Gui::Application::Instance->updateActive();
-		Sleep(10);
-		*/
-	
-
-   
-
-	//Base::Console().Message(myCar->getNameInDocument());
 }
-
-
-
-
 
 //===========================================================================
 // CmdShowcaseOpenRightDoor
@@ -181,7 +136,7 @@ void CmdShowcaseOpenRightDoor::activated(int iMsg)
 	App::DocumentObject * obj = myDoc->getObject("Peugeot_207001");
 	App::GeoFeature * geo = (App::GeoFeature*) obj;
 	geo->Placement.setValue(porteDroitePlacementOrig);
-	action->setDuration(10);
+	action->setDuration(1);
 	action->setTargetAndEndValue(obj,porteDroitePlacementDest);
 	action->update();
 }
@@ -226,7 +181,7 @@ App::Document* myDoc = App::GetApplication().getActiveDocument();
 	App::DocumentObject * obj = myDoc->getObject("Peugeot_207");
 	App::GeoFeature * geo = (App::GeoFeature*) obj;
 	geo->Placement.setValue(porteGauchePlacementOrig);
-	action->setDuration(10);
+	action->setDuration(1);
 	action->setTargetAndEndValue(obj,porteGauchePlacementDest);
 	action->update();
 
@@ -238,6 +193,7 @@ App::Document* myDoc = App::GetApplication().getActiveDocument();
 //===========================================================================
 DEF_STD_CMD(CmdShowcaseOpenCarTrunk);
 
+PlacementAction * trunkAction = NULL;
 
 CmdShowcaseOpenCarTrunk::CmdShowcaseOpenCarTrunk()
   : Command("Open_Car_Trunk")
@@ -253,8 +209,180 @@ CmdShowcaseOpenCarTrunk::CmdShowcaseOpenCarTrunk()
 
 void CmdShowcaseOpenCarTrunk::activated(int iMsg)
 {
-	Base::Console().Message("WHHHHHAAAAAAAAAAAAAAAAAAAATTTT ENCORE UNE METHODE VIDE ! ");		
+	App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	if(trunkAction != NULL)
+	{
+		trunkAction->stop();
+		delete trunkAction;
+		trunkAction = NULL;
+	}
+	stopCloseTrunkAction();
+
+	trunkAction = action;
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207004");
+
+	App::GeoFeature* geo1 = (App::GeoFeature*)obj;
+	Base::Placement trunkPlacementOrig = geo1->Placement.getValue();
+	//Base::Placement trunkPlacementOrig(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(-1,0,0),(0)));
+	Base::Placement trunkPlacementDest(Base::Vector3d(0,0,3300),Base::Rotation(Base::Vector3d(-1,0,0),(-80)));
+	
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(trunkPlacementOrig);
+	action->setDuration(1);
+	action->setTargetAndEndValue(obj,trunkPlacementDest);
+	action->update();
 }
+
+void stopOpenTrunkAction() {
+	if(trunkAction != NULL)
+	{
+		trunkAction->stop();
+		delete trunkAction;
+		trunkAction = NULL;
+	}
+}
+
+//===========================================================================
+// CmdShowcaseCloseRightDoor
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseCloseRightDoor);
+
+PlacementAction * closeRightDoorAction = NULL;
+
+CmdShowcaseCloseRightDoor::CmdShowcaseCloseRightDoor()
+  : Command("Close_Right_Door")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Closes the right door");
+    sToolTipText    = QT_TR_NOOP("Animation of the right door when it's closing");
+    sWhatsThis      = "Close_Right_Door";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test6";
+}
+
+void CmdShowcaseCloseRightDoor::activated(int iMsg)
+{
+	App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	if(closeRightDoorAction != NULL)
+	{
+		closeRightDoorAction->stop();
+		delete closeRightDoorAction;
+		closeRightDoorAction = NULL;
+	}
+	trunkAction = action;
+	Base::Placement rightDoorPlacementOrig(Base::Vector3d(800,0,400),Base::Rotation(Base::Vector3d(0,1,0),(-80.8)));
+	Base::Placement rightDoorPlacementDest(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207001");
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(rightDoorPlacementOrig);
+	action->setDuration(1);
+	action->setTargetAndEndValue(obj,rightDoorPlacementDest);
+	action->update();
+}
+
+//===========================================================================
+// CmdShowcaseCloseLeftDoor
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseCloseLeftDoor);
+
+PlacementAction * closeLeftDoorAction = NULL;
+
+CmdShowcaseCloseLeftDoor::CmdShowcaseCloseLeftDoor()
+  : Command("Close_Left_Door")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Close the left door");
+    sToolTipText    = QT_TR_NOOP("Animation of the left door when it's closing");
+    sWhatsThis      = "Close_Left_Door";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test7";
+}
+
+void CmdShowcaseCloseLeftDoor::activated(int iMsg)
+{
+	App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	if(closeLeftDoorAction != NULL)
+	{
+		closeLeftDoorAction->stop();
+		delete closeLeftDoorAction;
+		closeLeftDoorAction = NULL;
+	}
+	
+	trunkAction = action;
+	Base::Placement leftDoorPlacementOrig(Base::Vector3d(-875,0,560),Base::Rotation(Base::Vector3d(0,1,0),(80.8)));
+	Base::Placement leftDoorPlacementDest(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,1,0),(0)));
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207");
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(leftDoorPlacementOrig);
+	action->setDuration(1);
+	action->setTargetAndEndValue(obj,leftDoorPlacementDest);
+	action->update();
+}
+
+//===========================================================================
+// CmdShowcaseCloseTrunk 
+//===========================================================================
+DEF_STD_CMD(CmdShowcaseCloseTrunk);
+
+PlacementAction * closeTrunkAction = NULL;
+
+CmdShowcaseCloseTrunk::CmdShowcaseCloseTrunk()
+  : Command("Close_Trunk")
+{
+    sAppModule      = "ShowcaseMod";
+    sGroup          = QT_TR_NOOP("ShowcaseMod");
+    sMenuText       = QT_TR_NOOP("Close the car trunk");
+    sToolTipText    = QT_TR_NOOP("Animation of the trunk when it's closing");
+    sWhatsThis      = "Close_Trunk";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Test8";
+}
+
+void CmdShowcaseCloseTrunk::activated(int iMsg)
+{
+	App::Document* myDoc = App::GetApplication().getActiveDocument();
+	PlacementAction * action = new PlacementAction();
+	if(closeTrunkAction != NULL)
+	{
+		closeTrunkAction->stop();
+		delete closeTrunkAction;
+		closeTrunkAction = NULL;
+	}
+	stopOpenTrunkAction();
+
+	trunkAction = action;
+	App::DocumentObject * obj = myDoc->getObject("Peugeot_207004");
+
+	App::GeoFeature* geo2 = (App::GeoFeature*)obj;
+	Base::Placement trunkPlacementOrig = geo2->Placement.getValue();
+
+	//App::GeoFeature* geo = (App::GeoFeature*)target;
+	//geo->Placement.setValue(Base::Placement::slerp(startValue, endValue, evolution) );
+
+
+	Base::Placement trunkPlacementDest(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(-1,0,0),(0)));
+	
+	App::GeoFeature * geo = (App::GeoFeature*) obj;
+	geo->Placement.setValue(trunkPlacementOrig);
+	action->setDuration(1);
+	action->setTargetAndEndValue(obj,trunkPlacementDest);
+	action->update();
+}
+
+void stopCloseTrunkAction() {
+	if(closeTrunkAction != NULL)
+	{
+		closeTrunkAction->stop();
+		delete closeTrunkAction;
+		closeTrunkAction = NULL;
+	}
+}
+
 
 void CreateShowcaseModCommands(void)
 {
@@ -264,4 +392,7 @@ void CreateShowcaseModCommands(void)
 	rcCmdMgr.addCommand(new CmdShowcaseOpenRightDoor());
 	rcCmdMgr.addCommand(new CmdShowcaseOpenLeftDoor());
 	rcCmdMgr.addCommand(new CmdShowcaseOpenCarTrunk());
+	rcCmdMgr.addCommand(new CmdShowcaseCloseRightDoor());
+	rcCmdMgr.addCommand(new CmdShowcaseCloseLeftDoor());
+	rcCmdMgr.addCommand(new CmdShowcaseCloseTrunk());
 }
