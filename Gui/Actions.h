@@ -43,6 +43,7 @@ class PlacementAction : public Action<Base::Placement>
 {
 private:
 App::DocumentObject* target;
+float evolution;
 public:
 PlacementAction() : Action()
 {
@@ -55,6 +56,21 @@ void setTargetAndEndValue(App::DocumentObject* obj,Base::Placement dest)
 	App::GeoFeature* geo = (App::GeoFeature*)obj;
 	this->startValue = geo->Placement.getValue();
 	this->endValue = dest;
+	evolution = 0;
+}
+
+void setTargetAndEndValueAndInitialEvolution(App::DocumentObject* obj,Base::Placement dest, float evolution)
+{
+	target = obj;
+	App::GeoFeature* geo = (App::GeoFeature*)obj;
+	this->startValue = geo->Placement.getValue();
+	this->endValue = dest;
+	this->evolution = evolution;
+	this->elapsedTime = evolution * duration * 1000;
+}
+
+float getOppositeEvolution() {
+	return 1.0f - evolution;	
 }
 
 
@@ -64,7 +80,7 @@ virtual void  update()
 		return;
 
 	Action::update();
-	float evolution = (elapsedTime)/(duration*1000);
+	evolution = (elapsedTime)/(duration*1000);
 	if(evolution > 1.0)
 	{
 		evolution = 1.0;
